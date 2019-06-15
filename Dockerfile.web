@@ -18,4 +18,4 @@ WORKDIR /app
 RUN useradd -d /code -m myuser
 USER myuser
 
-CMD java -jar app.jar --server.port=$PORT --spring.jpa.database=org.hibernate.dialect.PostgreSQLDialect --spring.datasource.url=jdbc:postgresql://freholejjvpobd:8cbee566106b8b4d51311dd052cdb186a48303dea7806afca3d02d7df2e10bc8@ec2-75-101-147-226.compute-1.amazonaws.com:5432/dbh21fff6bbdsv
+CMD java -jar app.jar --server.port=$PORT
