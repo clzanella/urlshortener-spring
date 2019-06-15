@@ -1,0 +1,20 @@
+
+java -Xms1024m -Xmx1024m -jar build/libs/app.jar --server.port=8082
+
+bzt test.yml
+
+15:49:10 INFO: Test duration: 0:04:39
+15:49:10 INFO: Samples count: 96, 0.00% failures
+15:49:10 INFO: Average times: total 82.806, latency 0.021, connect 0.001
+15:49:10 INFO: Percentiles:
+┌───────────────┬───────────────┐
+│ Percentile, % │ Resp. Time, s │
+├───────────────┼───────────────┤
+│           0.0 │         0.006 │
+│          50.0 │         0.744 │
+│          90.0 │       219.264 │
+│          95.0 │       241.536 │
+│          99.0 │       274.432 │
+│          99.9 │       274.432 │
+│         100.0 │       274.432 │
+└───────────────┴───────────────┘

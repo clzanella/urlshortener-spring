@@ -1,0 +1,73 @@
+## installing heroku cli: https://devcenter.heroku.com/articles/heroku-cli
+## installing heroku container-registry plugin: https://devcenter.heroku.com/articles/container-registry-and-runtime
+
+### Variables ###
+
+PROJECT_ID="really-short"
+
+# Login in heroku on browser
+heroku login
+
+# create app
+heroku apps:create $PROJECT_ID
+
+
+# create database free addon
+sudo heroku addons:create heroku-postgresql:hobby-dev --app $PROJECT_ID
+sudo heroku addons --app $PROJECT_ID
+
+sudo heroku pg:info --app $PROJECT_ID
+sudo heroku pg:credentials:url DATABASE --app $PROJECT_ID
+
+heroku run echo \$JDBC_DATABASE_URL --app $PROJECT_ID
+
+sudo heroku pg:psql --app $PROJECT_ID
+
+
+##################################################################################################
+
+# In https://dashboard.heroku.com/apps/really-short select Deployment method "Container registry"
+
+# Login in heroku
+sudo heroku container:login
+
+# Building Docker image
+sudo docker build --file Dockerfile.web -t ${PROJECT_ID}/webserver .
+
+# push to container repository (name must be "web")
+sudo docker tag urlshortener/webserver registry.heroku.com/${PROJECT_ID}/web
+sudo docker push registry.heroku.com/${PROJECT_ID}/web
+
+sudo heroku container:release web --app $PROJECT_ID
+
+heroku open --app $PROJECT_ID
+heroku logs --app $PROJECT_ID
+
+
+# Other commands
+heroku ps:restart --app $PROJECT_ID
+
+heroku ps:scale web=1 --app $PROJECT_ID
+
+heroku ps --app $PROJECT_ID
+
+heroku run bash --app $PROJECT_ID
+
+# Docs
+
+# Execution model
+https://devcenter.heroku.com/articles/dynos
+
+# Common error solution
+https://kb.heroku.com/why-am-i-seeing-couldn-t-find-that-process-type-when-trying-to-scale-dynos
+
+# Web servers principles
+https://devcenter.heroku.com/articles/runtime-principles#web-servers
+
+# Logging
+https://devcenter.heroku.com/articles/logging#types-of-logs
+
+# Docker compose (Kubernetes alternative)
+https://devcenter.heroku.com/articles/local-development-with-docker-compose
+
+
