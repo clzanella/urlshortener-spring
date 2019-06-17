@@ -3,6 +3,8 @@ java -Xms1024m -Xmx1024m -jar build/libs/app.jar --server.port=8082
 
 bzt test.yml
 
+#### Using default Spring TomCat server
+
 15:49:10 INFO: Test duration: 0:04:39
 15:49:10 INFO: Samples count: 96, 0.00% failures
 15:49:10 INFO: Average times: total 82.806, latency 0.021, connect 0.001
@@ -17,4 +19,22 @@ bzt test.yml
 │          99.0 │       274.432 │
 │          99.9 │       274.432 │
 │         100.0 │       274.432 │
+└───────────────┴───────────────┘
+
+### Using Spring with Undertow
+
+16:09:48 INFO: Test duration: 0:13:19
+16:09:48 INFO: Samples count: 156, 1.28% failures
+16:09:48 INFO: Average times: total 21.772, latency 0.016, connect 0.001
+16:09:48 INFO: Percentiles:
+┌───────────────┬───────────────┐
+│ Percentile, % │ Resp. Time, s │
+├───────────────┼───────────────┤
+│           0.0 │         0.005 │
+│          50.0 │         0.517 │
+│          90.0 │        74.624 │
+│          95.0 │        83.328 │
+│          99.0 │        96.576 │
+│          99.9 │       124.544 │
+│         100.0 │       124.544 │
 └───────────────┴───────────────┘
