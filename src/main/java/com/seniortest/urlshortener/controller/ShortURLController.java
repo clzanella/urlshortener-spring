@@ -1,7 +1,7 @@
 package com.seniortest.urlshortener.controller;
 
 import com.seniortest.urlshortener.Application;
-import com.seniortest.urlshortener.common.InstantProvicer;
+import com.seniortest.urlshortener.common.InstantProvider;
 import com.seniortest.urlshortener.model.ShortURL;
 import com.seniortest.urlshortener.service.ShortURLService;
 import org.slf4j.Logger;
@@ -26,13 +26,13 @@ public class ShortURLController {
 
     private final String expiration;
     private final ShortURLService urlService;
-    private final InstantProvicer instantProvicer;
+    private final InstantProvider instantProvider;
 
     @Autowired
-    public ShortURLController(@Value(Application.URL_EXPIRIRATION_DURATION_EXPR) String expirationPeriod, ShortURLService urlService, InstantProvicer instantProvicer) {
+    public ShortURLController(@Value(Application.URL_EXPIRIRATION_DURATION_EXPR) String expirationPeriod, ShortURLService urlService, InstantProvider instantProvider) {
         this.expiration = expirationPeriod;
         this.urlService = urlService;
-        this.instantProvicer = instantProvicer;
+        this.instantProvider = instantProvider;
     }
 
     @RequestMapping(value = "/shortener", method= RequestMethod.POST)
@@ -49,7 +49,7 @@ public class ShortURLController {
 
         ShortURL shortURL = new ShortURL();
         shortURL.setUrl(shortenRequest.url);
-        shortURL.setCreatedAt(instantProvicer.now());
+        shortURL.setCreatedAt(instantProvider.now());
         shortURL.setExpireSeconds(Duration.parse(this.expiration).getSeconds());
 
         urlService.save(shortURL);
@@ -77,7 +77,7 @@ public class ShortURLController {
         String redirectUrlString = entity.get().getUrl();
         LOGGER.info("Original URL. From {} to {}", id, redirectUrlString);
 
-        if(instantProvicer.now().isAfter(entity.get().getCreatedAt().plusSeconds(entity.get().getExpireSeconds()))){
+        if(instantProvider.now().isAfter(entity.get().getCreatedAt().plusSeconds(entity.get().getExpireSeconds()))){
             LOGGER.info("Expired URL {}", id);
             return new ResponseEntity<>(HttpStatus.GONE);
         }

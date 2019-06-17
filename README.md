@@ -47,6 +47,10 @@ sudo apt update
 sudo apt install python-pip
 sudo pip install bzt --upgrade
 ```
+- Para executar o servidor:
+```
+java -Xms1024m -Xmx1024m -jar build/libs/app.jar 
+```
 - Para executar o teste:
 ``` 
 cd src/test/resources/performance/load-test

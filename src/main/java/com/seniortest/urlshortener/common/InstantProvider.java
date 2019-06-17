@@ -4,11 +4,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
-public interface InstantProvicer {
+public interface InstantProvider {
     default Instant now(){
         return Instant.now();
     }
 
     @Service
-    class Impl implements InstantProvicer { }
+    class Impl implements InstantProvider { }
 }

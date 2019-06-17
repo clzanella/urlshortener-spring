@@ -1,7 +1,7 @@
 package com.seniortest.urlshortener.tests.unit.controller;
 
 
-import com.seniortest.urlshortener.common.InstantProvicer;
+import com.seniortest.urlshortener.common.InstantProvider;
 import com.seniortest.urlshortener.controller.ShortURLController;
 import com.seniortest.urlshortener.model.ShortURL;
 import com.seniortest.urlshortener.service.ShortURLService;
@@ -25,8 +25,8 @@ public class ShortURLControllerTest {
     @Test
     public void shortenUrlInvallidUrl() throws URISyntaxException {
         ShortURLService service = mock(ShortURLService.class);
-        InstantProvicer instantProvicer = mock(InstantProvicer.class);
-        ShortURLController controller = new ShortURLController(DURATION, service, instantProvicer);
+        InstantProvider instantProvider = mock(InstantProvider.class);
+        ShortURLController controller = new ShortURLController(DURATION, service, instantProvider);
 
         ShortURLController.ShortURLRequest request = new ShortURLController.ShortURLRequest();
         request.url = "xx";
@@ -39,8 +39,8 @@ public class ShortURLControllerTest {
     public void shortenNakedUrl() throws URISyntaxException {
 
         final Instant instant = Instant.parse("2019-06-15T12:00:00.00Z");
-        InstantProvicer instantProvicer = mock(InstantProvicer.class);
-        doAnswer(invocation -> instant).when(instantProvicer).now();
+        InstantProvider instantProvider = mock(InstantProvider.class);
+        doAnswer(invocation -> instant).when(instantProvider).now();
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getRequestURL()).thenReturn(new StringBuffer("http://shortulr.com/"));
@@ -56,7 +56,7 @@ public class ShortURLControllerTest {
 
         ArgumentCaptor<ShortURL> argCaptor = ArgumentCaptor.forClass(ShortURL.class);
 
-        ShortURLController controller = new ShortURLController(DURATION, service, instantProvicer);
+        ShortURLController controller = new ShortURLController(DURATION, service, instantProvider);
 
         ShortURLController.ShortURLRequest urlRequest = new ShortURLController.ShortURLRequest();
         urlRequest.url = "google.com";
@@ -90,8 +90,8 @@ public class ShortURLControllerTest {
     @Test
     public void redirectUrlExpired() {
 
-        InstantProvicer instantProvicer = mock(InstantProvicer.class);
-        doAnswer(invocation -> Instant.parse("2019-06-15T14:00:00.00Z")).when(instantProvicer).now();
+        InstantProvider instantProvider = mock(InstantProvider.class);
+        doAnswer(invocation -> Instant.parse("2019-06-15T14:00:00.00Z")).when(instantProvider).now();
 
         ShortURLService service = mock(ShortURLService.class);
         doAnswer(invocation -> {
@@ -105,7 +105,7 @@ public class ShortURLControllerTest {
 
         }).when(service).findByStringID(isA(String.class));
 
-        ShortURLController controller = new ShortURLController(DURATION, service, instantProvicer);
+        ShortURLController controller = new ShortURLController(DURATION, service, instantProvider);
 
         ResponseEntity<?> responseEntity = controller.redirectUrl("xx");
 
@@ -117,8 +117,8 @@ public class ShortURLControllerTest {
     @Test
     public void redirectUrl() {
 
-        InstantProvicer instantProvicer = mock(InstantProvicer.class);
-        doAnswer(invocation -> Instant.parse("2019-06-15T10:00:00.00Z")).when(instantProvicer).now();
+        InstantProvider instantProvider = mock(InstantProvider.class);
+        doAnswer(invocation -> Instant.parse("2019-06-15T10:00:00.00Z")).when(instantProvider).now();
 
         ShortURLService service = mock(ShortURLService.class);
         doAnswer(invocation -> {
@@ -132,7 +132,7 @@ public class ShortURLControllerTest {
 
         }).when(service).findByStringID(isA(String.class));
 
-        ShortURLController controller = new ShortURLController(DURATION, service, instantProvicer);
+        ShortURLController controller = new ShortURLController(DURATION, service, instantProvider);
 
         ResponseEntity<?> responseEntity = controller.redirectUrl("xx");
 
